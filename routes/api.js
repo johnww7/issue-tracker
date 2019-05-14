@@ -25,8 +25,23 @@ module.exports = function (app) {
     
     .post(function (req, res){
       let project = req.params.project;
+      let issueData = req.body;
       //console.log('params: ' + JSON.stringify(req.query.issue_title));
       console.log('params: ' + JSON.stringify(req.body));
+
+      MongoClient.connect(MONGO_URI, (err, db) => {
+        if(err) {
+          console.log('Database error: ' + err);
+        }
+        else {
+          console.log('Successful database connection!');
+          db.collection(project).insertOne(issueData, (err, res) => {
+            if (err) { console.log(err); }
+            console.log("1 issue inserted");
+            db.close();
+          });
+        }
+      });
     })
     
     .put(function (req, res){
