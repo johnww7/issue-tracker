@@ -11,11 +11,13 @@
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
+var Controller = require('../handler/controller.js');
 
 const MONGO_URI = process.env.MONGO_URI; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 module.exports = function (app) {
-
+  var issueController = new Controller();
+  
   app.route('/api/issues/:project')
   
     .get(function (req, res){
