@@ -31,7 +31,9 @@ module.exports = function (app) {
       //console.log('params: ' + JSON.stringify(req.query.issue_title));
       console.log('params: ' + JSON.stringify(req.body));
 
-      MongoClient.connect(MONGO_URI, (err, db) => {
+      let submitIssue = issueController.sendIssue(issueData);
+      console.log('submitted issue: ' + JSON.stringify(submitIssue));
+      /*MongoClient.connect(MONGO_URI, (err, db) => {
         if(err) {
           console.log('Database error: ' + err);
         }
@@ -43,7 +45,7 @@ module.exports = function (app) {
             db.close();
           });
         }
-      });
+      });*/
     })
     
     .put(function (req, res){
