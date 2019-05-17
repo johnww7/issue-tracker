@@ -33,19 +33,19 @@ module.exports = function (app) {
 
       let submitIssue = issueController.sendIssue(issueData);
       console.log('submitted issue: ' + JSON.stringify(submitIssue));
-      /*MongoClient.connect(MONGO_URI, (err, db) => {
+      MongoClient.connect(MONGO_URI, (err, db) => {
         if(err) {
           console.log('Database error: ' + err);
         }
         else {
           console.log('Successful database connection!');
-          db.collection(project).insertOne(issueData, (err, res) => {
+          db.collection(project).insertOne(submitIssue, (err, res) => {
             if (err) { console.log(err); }
             console.log("1 issue inserted");
-            db.close();
+            //db.close();
           });
         }
-      });*/
+      });
     })
     
     .put(function (req, res){

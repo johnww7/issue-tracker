@@ -8,13 +8,19 @@ function IssueController() {
         let returnData;
 
         if(data.issue_title === '') {
-            return 'Please fill out title field';
+            return returnData = {
+                issue_title: 'Please fill out title field'
+            };
         }
         else if(data.issue_text === '') {
-            return 'Please fill out text field';
+            return returnData = {
+                issue_text:'Please fill out text field'
+            };
         }
         else if(data.created_by === '') {
-            return 'Please fill out created by field';
+            return returnData = {
+                created_by:'Please fill out created by field'
+            };
         }
         else {
             return returnData = {
