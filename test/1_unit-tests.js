@@ -12,10 +12,10 @@ var controller = require('../handler/controller.js');
 
 var issueController = new controller(); 
 
-describe('Unit Tests', function() {
+suite('Unit Tests', function() {
 
 //none required
-    describe('Function issueController.sendIssue(data)', function(){
+    suite('Function issueController.sendIssue(data)', function(){
         
         test('All fields filled input', function(done) {
             let inputData = {
@@ -31,4 +31,4 @@ describe('Unit Tests', function() {
         
     });
 
-})
+});

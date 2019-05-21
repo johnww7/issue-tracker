@@ -32,7 +32,9 @@ var Mocha = require('mocha'),
     fs = require('fs'),
     path = require('path');
 
-var mocha = new Mocha();
+var mocha = new Mocha({
+  ui: 'bdd'
+});
 var testDir = './tests'
 
 
