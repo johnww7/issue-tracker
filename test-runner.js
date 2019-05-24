@@ -32,10 +32,8 @@ var Mocha = require('mocha'),
     fs = require('fs'),
     path = require('path');
 
-var mocha = new Mocha({
-  ui: 'bdd'
-});
-var testDir = './tests'
+var mocha = new Mocha();
+var testDir = './test'
 
 
 // Add each .js file to the mocha instance
@@ -49,7 +47,7 @@ fs.readdirSync(testDir).filter(function(file){
     );
 });
 
-var emitter = new EventEmitter();  
+var emitter = new EventEmitter();
 emitter.run = function() {
 
   var tests = [];

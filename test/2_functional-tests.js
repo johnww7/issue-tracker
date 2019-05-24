@@ -13,7 +13,7 @@ var server = require('../server');
 
 chai.use(chaiHttp);
 
-suite('Functional Tests', function() {
+suite.skip('Functional Tests', function() {
   
     suite('POST /api/issues/{project} => object with issue data', function() {
       
