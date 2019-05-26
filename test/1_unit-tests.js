@@ -29,6 +29,22 @@ suite('Unit Tests', function() {
             done();
         });
         
+        test('Blank for optional input fields', function(done) {
+            let inputData = {
+                issue_title: 'test',
+                issue_text: 'test data',
+                created_by: 'john',
+                assigned_to: '',
+                status_text: ''
+            }
+            let message = "field is blank";
+
+            assert.isObject(issueController.sendIssue(inputData), 'Return value is an object');
+            assert.include(issueController.sendIssue(inputData), {assigned_to: ''}, message);
+            assert.include(issueController.sendIssue(inputData), {status_text: ''}, message);
+
+            done();
+        });
     });
 
 });

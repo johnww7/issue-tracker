@@ -13,7 +13,7 @@ var server = require('../server');
 
 chai.use(chaiHttp);
 
-suite.skip('Functional Tests', function() {
+suite('Functional Tests', function() {
   
     suite('POST /api/issues/{project} => object with issue data', function() {
       
@@ -29,24 +29,24 @@ suite.skip('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          
+          assert.equal(res.body.issue_title, 'Title');
           //fill me in too!
-          
+          console.log('body: ' + res.body);  
           done();
         });
       });
       
-      test('Required fields filled in', function(done) {
+      test.skip('Required fields filled in', function(done) {
         
       });
       
-      test('Missing required fields', function(done) {
+      test.skip('Missing required fields', function(done) {
         
       });
       
     });
     
-    suite('PUT /api/issues/{project} => text', function() {
+    suite.skip('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
         
@@ -62,7 +62,7 @@ suite.skip('Functional Tests', function() {
       
     });
     
-    suite('GET /api/issues/{project} => Array of objects with issue data', function() {
+    suite.skip('GET /api/issues/{project} => Array of objects with issue data', function() {
       
       test('No filter', function(done) {
         chai.request(server)
@@ -94,7 +94,7 @@ suite.skip('Functional Tests', function() {
       
     });
     
-    suite('DELETE /api/issues/{project} => text', function() {
+    suite.skip('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
         
