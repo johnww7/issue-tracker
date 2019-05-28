@@ -19,7 +19,7 @@ suite('Functional Tests', function() {
       
       test('Every field filled in', function(done) {
        chai.request(server)
-        .post('/api/issues/test')
+        .post("/api/issues/test")
         .send({
           issue_title: 'Title',
           issue_text: 'text',
@@ -29,7 +29,12 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.issue_title, 'Title');
+          //assert.equal(res.body.issue_title, 'Title');
+          assert.isDefined(res.body.issue_title, 'field has been filled');
+          assert.isDefined(res.body.issue_text, 'field has been filled');
+          assert.isDefined(res.body.created_by, 'field has been filled');
+          assert.isDefined(res.body.assigned_to, 'field has been filled');
+          assert.isDefined(res.body.status_text, 'field has been filled');
           //fill me in too!
           console.log('body: ' + res.body);  
           done();
