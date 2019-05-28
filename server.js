@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
     .send('Not Found');
 });
 
-app.use(function(err, req, res, next) {
+app.use(function(err, res, next) {
   console.error(err);
   res.status(500).send('internal server error');
 });
