@@ -29,6 +29,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
+          console.log('body: ' + res.body);  
           //assert.equal(res.body.issue_title, 'Title');
           assert.isDefined(res.body.issue_title, 'field has been filled');
           assert.isDefined(res.body.issue_text, 'field has been filled');
@@ -36,7 +37,7 @@ suite('Functional Tests', function() {
           assert.isDefined(res.body.assigned_to, 'field has been filled');
           assert.isDefined(res.body.status_text, 'field has been filled');
           //fill me in too!
-          console.log('body: ' + res.body);  
+         
           done();
         });
       });
