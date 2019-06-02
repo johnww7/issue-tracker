@@ -43,11 +43,11 @@ module.exports = function (app) {
               db.collection(project).insertOne(submitIssue, (err, res) => {
                 if (err) { console.log(err); }
                 console.log("1 issue inserted");
-                //db.close();
+                db.close();
               });
             }
           });
-          //res.json(submitIssue);
+          res.json(submitIssue);
         })
         
         .put(function (req, res){
