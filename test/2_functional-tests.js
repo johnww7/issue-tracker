@@ -46,12 +46,12 @@ suite('Functional Tests', function() {
         
       });
       
-      test.skip('Required fields filled in', function(done) {
+      test('Required fields filled in', function(done) {
         chai.request(server)
         .post("/api/issues/test")
         .send({
           issue_title: 'Required Title',
-          issue_text: 'required text',
+          issue_text: 'Required Text',
           created_by: 'Functional Test - Required fields filled in',
           assigned_to: '',
           status_text: ''
@@ -59,14 +59,31 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           
           assert.equal(res.status, 200);
-          assert.equal(res.)
+          assert.equal(res.body.issue_title, 'Required Title');
+          assert.equal(res.body.issue_text, 'Required Text');
+          assert.equal(res.body.created_by, 'Functional Test - Required fields filled in');
+          assert.equal(res.body.assigned_to, '');
+          assert.equal(res.body.status_text, '');
           done();  
           
         }); 
       });
       
-      test.skip('Missing required fields', function(done) {
-        
+      test('Missing required fields', function(done) {
+        chai.request(server)
+        .post("/api/issues/test")
+        .send({
+          issue_title: '',
+          issue_text: '',
+          created_by: '',
+          assigned_to: 'Danny',
+          status_text: 'In Progress'
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.issue_title, 'Please fill out title field');
+          done();
+        });       
       });
       
     });
