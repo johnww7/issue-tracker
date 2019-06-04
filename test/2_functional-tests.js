@@ -29,7 +29,6 @@ suite('Functional Tests', function() {
           status_text: 'In QA'
         })
         .end(function(err, res){
-          
             assert.equal(res.status, 200);
             console.log('body: ' + res.body);  
             //assert.equal(res.body.issue_title, 'Title');
@@ -91,15 +90,40 @@ suite('Functional Tests', function() {
     suite.skip('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
-        
+        chai.request(server)
+        .put("/api/issues/test")
+        .send({
+          _id: '32dAxmWn4G'
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.body._id, '32dAxmWn4G');
+          assert.equal(res.body.updated_on, new Date());
+        });
       });
       
       test('One field to update', function(done) {
-        
+        chai.request(server)
+        .put("/api/issues/test")
+        .send({
+          _id: '32dAxmWn4G'
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          
+        });
       });
       
       test('Multiple fields to update', function(done) {
-        
+        chai.request(server)
+        .put("/api/issues/test")
+        .send({
+          _id: '32dAxmWn4G'
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          
+        });  
       });
       
     });

@@ -1,3 +1,5 @@
+const shortid = require('shortid');
+
 function IssueController() {
     this.sendIssue = function(data) {
         console.log("contents of issue: " + JSON.stringify(data));
@@ -24,6 +26,7 @@ function IssueController() {
         }
         else {
             return returnData = {
+                _id: shortid.generate(),
                 issue_title: data.issue_title,
                 issue_text: data.issue_text,
                 created_on,
