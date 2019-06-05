@@ -87,18 +87,20 @@ suite('Functional Tests', function() {
       
     });
     
-    suite.skip('PUT /api/issues/{project} => text', function() {
+    suite('PUT /api/issues/{project} => text', function() {
       
       test('No body', function(done) {
         chai.request(server)
         .put("/api/issues/test")
         .send({
-          _id: '32dAxmWn4G'
+          _id: '32dAxmWn4G',
+          updated_on: new Date()
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
           assert.equal(res.body._id, '32dAxmWn4G');
           assert.equal(res.body.updated_on, new Date());
+          assert.equal(res.body.update, 'no updated field sent');
         });
       });
       
@@ -106,11 +108,15 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put("/api/issues/test")
         .send({
-          _id: '32dAxmWn4G'
+          _id: '32dAxmWn4G',
+          updated_on: new Date(),
+          status_text: 'In review'
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          
+          assert.equal(res.body._id, '32dAxmWn4G');
+          assert.equal(res.body.updated_on, new Date());
+          assert.equal(res.body.status_text, 'In review');
         });
       });
       
@@ -118,15 +124,23 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put("/api/issues/test")
         .send({
-          _id: '32dAxmWn4G'
+          _id: '32dAxmWn4G',
+          updated_on: new Date(),
+          issue_text: 'Optional text',
+          assigned_to: 'Michael',
+          status_text: 'Fixed'
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          
+          assert.equal(res.body._id, '32dAxmWn4G');
+          assert.equal(res.body.updated_on, new Date());
+          assert.equal(res.body.issue_text, 'Optional text');
+          assert.equal(res.body.assigned_to, 'Michael');
+          assert.equal(res.body.status_text, 'Fixed');
         });  
       });
       
-    });
+    }); 
     
     suite.skip('GET /api/issues/{project} => Array of objects with issue data', function() {
       
