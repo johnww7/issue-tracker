@@ -93,13 +93,11 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put("/api/issues/test")
         .send({
-          _id: '32dAxmWn4G',
-          updated_on: new Date()
+          _id: '32dAxmWn4G'
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
           assert.equal(res.body._id, '32dAxmWn4G');
-          assert.equal(res.body.updated_on, new Date());
           assert.equal(res.body.update, 'no updated field sent');
         });
       });

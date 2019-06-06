@@ -40,6 +40,10 @@ function IssueController() {
 
         //return issue;
     };
+
+    this.checkUpdatedIssue = function(data) {
+        
+    };
 }
 
 module.exports = IssueController;

@@ -47,4 +47,30 @@ suite('Unit Tests', function() {
         });
     });
 
+    suite.skip('Function issueController.checkUpdatedIssue(data)', function() {
+        test('No body fields sent', function(done) {
+            let updatedData = {
+                _id: '5871dda29'
+            };
+            assert.equal(issueController.checkUpdatedIssue(updatedData), '5871dda29');
+            assert.lengthOf(issueController.checkUpdatedIssue(updatedData), 1, 'Only 1 key');
+
+        });
+
+        test('Atleast 1 or multiple fields updated', function(done) {
+            let updatedData = {
+                _id: '5871dda29',
+                issue_text: 'Optional text',
+                assigned_to: 'Michael'
+            };
+
+            assert.include(issueController.checkUpdatedIssue(updatedData), {_id: '5871dda29'});
+            assert.include(issueController.checkUpdatedIssue(updatedData), {issue_text: 'Optional text'});
+            assert.include(issueController.checkUpdatedIssue(updatedData), {assigned_to: 'Michael'});
+            assert.lengthOf(issueController.checkUpdatedIssue(updatedData), 3, 'Only 3 keys');
+    
+        });
+
+    });
+
 });
