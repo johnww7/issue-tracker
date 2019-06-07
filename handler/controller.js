@@ -42,7 +42,11 @@ function IssueController() {
     };
 
     this.checkUpdatedIssue = function(data) {
-        
+        let updated_on = new Date();
+        let open = data.open;
+        let updatedData;
+
+        if() 
     };
 }
 

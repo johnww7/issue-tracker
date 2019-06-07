@@ -52,9 +52,10 @@ suite('Unit Tests', function() {
             let updatedData = {
                 _id: '5871dda29'
             };
-            assert.equal(issueController.checkUpdatedIssue(updatedData), '5871dda29');
+            assert.equal(issueController.checkUpdatedIssue(updatedData), 'no updated field sent');
             assert.lengthOf(issueController.checkUpdatedIssue(updatedData), 1, 'Only 1 key');
-
+            
+            done();
         });
 
         test('Atleast 1 or multiple fields updated', function(done) {
@@ -68,7 +69,7 @@ suite('Unit Tests', function() {
             assert.include(issueController.checkUpdatedIssue(updatedData), {issue_text: 'Optional text'});
             assert.include(issueController.checkUpdatedIssue(updatedData), {assigned_to: 'Michael'});
             assert.lengthOf(issueController.checkUpdatedIssue(updatedData), 3, 'Only 3 keys');
-    
+            done();
         });
 
     });

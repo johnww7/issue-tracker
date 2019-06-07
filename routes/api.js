@@ -58,7 +58,11 @@ module.exports = function (app) {
         
         .put(function (req, res){
           let project = req.params.project;
+          let issueData = req.body;
           console.log('Put: ' + project);
+          console.log('put data: ' + JSON.stringify(issueData));
+
+          let updatedIssue = issueController.checkUpdatedIssue(issueData);
         })
         
         .delete(function (req, res){

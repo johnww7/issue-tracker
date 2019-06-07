@@ -58,9 +58,9 @@ suite('Functional Tests', function() {
         .end(function(err, res){
           
           assert.equal(res.status, 200);
-          assert.equal(res.body.issue_title, 'Required Title');
-          assert.equal(res.body.issue_text, 'Required Text');
-          assert.equal(res.body.created_by, 'Functional Test - Required fields filled in');
+          assert.isDefined(res.body.issue_title, 'field has been filled');
+          assert.isDefined(res.body.issue_text, 'field has been filled');
+          assert.isDefined(res.body.created_by, 'field has been filled');
           assert.equal(res.body.assigned_to, '');
           assert.equal(res.body.status_text, '');
           done();  
@@ -81,6 +81,7 @@ suite('Functional Tests', function() {
         .end(function(err, res) {
           assert.equal(res.status, 200);
           assert.equal(res.body.issue_title, 'Please fill out title field');
+          
           done();
         });       
       });
