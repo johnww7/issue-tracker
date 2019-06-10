@@ -46,7 +46,14 @@ function IssueController() {
         let open = data.open;
         let updatedData;
 
-        if() 
+        if(Object.keys(data).length == 1 && data._id !== undefined) {
+            return updatedData = {
+                update: 'no updated field sent'
+            };
+        }
+        else {
+            return updatedData = Object.assign(data, updated_on, open);
+        } 
     };
 }
 

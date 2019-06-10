@@ -63,6 +63,31 @@ module.exports = function (app) {
           console.log('put data: ' + JSON.stringify(issueData));
 
           let updatedIssue = issueController.checkUpdatedIssue(issueData);
+          if(Object.keys(updatedIssue).length == 1 && updatedIssue.update !== undefined){
+            res.json(updatedIssue);
+          }
+          else {
+            MongoClient.connect(MONGO_URI, (err, db) => {
+              if(err) {
+                console.log('Database error: ' + err);
+              }
+              else {
+                console.log('Successful database connection!');
+                db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
+                  if (err) {console.log(err);}
+                  if(res._id === null) {
+                    res.json({result: 'could not update' + res._id})
+                  }
+                  else {
+                    db.collection(project).updateOne(res._id, {$set: res});
+                    res.json({result: 'successfully updated'});
+                  }
+                });
+                  
+              }
+            });
+          
+          }
         })
         
         .delete(function (req, res){
