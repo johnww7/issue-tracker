@@ -84,7 +84,9 @@ module.exports = function (app) {
                     //res.json({result: 'could not update' + res._id})
                   }
                   else {
-                    db.collection(project).updateOne({_id: res._id}, res, {upsert: true, w:1}, (err, data) => {
+                    let updateCollection = updatedIssue;
+                    console.log('Update info: ' + JSON.stringify(updateCollection));
+                    db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
                       if(err) {console.log(err);}
                       result = {result: 'successfully updated'};
                       console.log("Updated: " + JSON.stringify(data));         
