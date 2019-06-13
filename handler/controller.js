@@ -41,10 +41,13 @@ function IssueController() {
         //return issue;
     };
 
-    this.checkUpdatedIssue = function(data) {
+    this.checkUpdatedIssue = function(entryData, data) {
         let updated_on = new Date();
         let open = data.open;
         let updatedData;
+
+        let issueDataValues = Object.values(data);
+        const filterEmptyFields = issueDataValues.filter(entry => entry !== '');
 
         if(Object.keys(data).length == 1 && data._id !== undefined) {
             return updatedData = {

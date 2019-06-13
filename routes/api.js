@@ -62,11 +62,10 @@ module.exports = function (app) {
           console.log('Put: ' + project);
           console.log('put data: ' + JSON.stringify(issueData));
 
-          let updatedIssue = issueController.checkUpdatedIssue(issueData);
-          if(Object.keys(updatedIssue).length == 1 && updatedIssue.update !== undefined){
-            res.json(updatedIssue);
-          }
-          else {
+         // let updatedIssue = issueController.checkUpdatedIssue(issueData);
+          //console.log('Body length: ' + Object.keys(issueData).length + ' _id: ' + issueData._id);
+          
+          
             let result;
             MongoClient.connect(MONGO_URI, (err, db) => {result = {result: 'successfully updated'};
             //res.json({result: 'successfully updated'});
@@ -78,10 +77,14 @@ module.exports = function (app) {
                 console.log('Successful database connection!');
                 db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
                   if (err) {console.log(err);}
+                  let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
                   console.log('Results: ' + JSON.stringify(res));
                   if(res._id === null) {
                     result = {result: 'could not update' + res._id};
                     //res.json({result: 'could not update' + res._id})
+                  }
+                  else if(Object.keys(issueData).length == 1 && issueData._id !== undefined){
+                    res.json({update: 'no updated field sent'});
                   }
                   else {
                     let updateCollection = updatedIssue;
@@ -101,7 +104,7 @@ module.exports = function (app) {
               }
             });
             res.json(result);
-          }
+          
         })
         
         .delete(function (req, res){
