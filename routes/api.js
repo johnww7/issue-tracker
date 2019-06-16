@@ -64,10 +64,8 @@ module.exports = function (app) {
 
          // let updatedIssue = issueController.checkUpdatedIssue(issueData);
           //console.log('Body length: ' + Object.keys(issueData).length + ' _id: ' + issueData._id);
-          
-          
             let result;
-            MongoClient.connect(MONGO_URI, (err, db) => {result = {result: 'successfully updated'};
+            MongoClient.connect(MONGO_URI, (err, db) => {
             //res.json({result: 'successfully updated'});
             
               if(err) {
@@ -81,10 +79,14 @@ module.exports = function (app) {
                   console.log('Results: ' + JSON.stringify(res));
                   if(res._id === null) {
                     result = {result: 'could not update' + res._id};
+                    //res.json({result: 'could not update' + res.id});
+                    db.close();
                     //res.json({result: 'could not update' + res._id})
                   }
-                  else if(Object.keys(issueData).length == 1 && issueData._id !== undefined){
-                    res.json({update: 'no updated field sent'});
+                  else if(Object.keys(updatedIssue).length == 1 && issueData._id !== undefined){
+                    result = {update: 'no updated field sent'};
+                    //res.json({result: 'no updated field sent'});
+                    db.close();
                   }
                   else {
                     let updateCollection = updatedIssue;
@@ -92,6 +94,7 @@ module.exports = function (app) {
                     db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
                       if(err) {console.log(err);}
                       result = {result: 'successfully updated'};
+                      //res.json({result: 'successfully updated'});
                       console.log("Updated: " + JSON.stringify(data));         
                       console.log('1 updated occured');
                       //res.json({result: 'successfully updated'});
@@ -100,10 +103,12 @@ module.exports = function (app) {
                     
                   }
                 });
-                  
+                console.log('Results of update: ' + result);
+                res.json(result);  
               }
+              
             });
-            res.json(result);
+            
           
         })
         

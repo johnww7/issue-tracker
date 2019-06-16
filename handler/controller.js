@@ -48,13 +48,15 @@ function IssueController() {
 
         let issueDataValues = Object.values(data);
         const filterEmptyFields = issueDataValues.filter(entry => entry !== '');
-
-        if(Object.keys(data).length == 1 && data._id !== undefined) {
+        console.log('Length of field: ' + filterEmptyFields);
+        if(Object.keys(filterEmptyFields).length == 1 && data._id !== undefined) {
+            console.log('Cannot update');
             return updatedData = {
                 update: 'no updated field sent'
             };
         }
         else {
+            console.log('Can make an update');
             return updatedData = Object.assign(data, updated_on, open);
         } 
     };
