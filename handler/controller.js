@@ -33,7 +33,7 @@ function IssueController() {
                 updated_on,
                 created_by: data.created_by,
                 assigned_to: data.assigned_to,
-                open,
+                open: true,
                 status_text: data.status_text,
             };
         }
@@ -42,9 +42,11 @@ function IssueController() {
     };
 
     this.checkUpdatedIssue = function(entryData, data) {
-        let updated_on = new Date();
-        let open = data.open;
+        let updated_on = {updated_on: new Date()};
+        let open = {open: (data.open || true)};
         let updatedData;
+        console.log('Update data from issue: ' + JSON.stringify(data));
+        console.log('Data from db: ' + JSON.stringify(entryData));
 
         let issueDataValues = Object.values(data);
         const filterEmptyFields = issueDataValues.filter(entry => entry !== '');
@@ -57,7 +59,7 @@ function IssueController() {
         }
         else {
             console.log('Can make an update');
-            return updatedData = Object.assign(data, updated_on, open);
+            return updatedData = Object.assign({}, entryData, data, updated_on, open);
         } 
     };
 }

@@ -76,7 +76,7 @@ module.exports = function (app) {
                 db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
                   if (err) {console.log(err);}
                   let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
-                  console.log('Results: ' + JSON.stringify(res));
+                  console.log('Results: ' + JSON.stringify(updatedIssue));
                   if(res._id === null) {
                     result = {result: 'could not update' + res._id};
                     //res.json({result: 'could not update' + res.id});
@@ -102,13 +102,15 @@ module.exports = function (app) {
                     });
                     
                   }
+                   
+                  //db.close();
                 });
-                console.log('Results of update: ' + result);
-                res.json(result);  
+                 
               }
               
             });
-            
+            console.log('Results of update: ' + result);
+            res.json(result);  
           
         })
         
