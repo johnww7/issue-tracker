@@ -29,8 +29,8 @@ function IssueController() {
                 _id: shortid.generate(),
                 issue_title: data.issue_title,
                 issue_text: data.issue_text,
-                created_on,
-                updated_on,
+                created_on: new Date(),
+                updated_on: new Date(),
                 created_by: data.created_by,
                 assigned_to: data.assigned_to,
                 open: true,
@@ -59,7 +59,9 @@ function IssueController() {
         }
         else {
             console.log('Can make an update');
-            return updatedData = Object.assign({}, entryData, data, updated_on, open);
+            let filterUpdateData = data.filter(entry => Object)
+            let mergeDbAndEntryData = Object.assign({}, )
+            //return updatedData = Object.assign({}, entryData, filterEmp, updated_on, open);
         } 
     };
 }
