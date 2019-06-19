@@ -59,9 +59,15 @@ function IssueController() {
         }
         else {
             console.log('Can make an update');
-            let filterUpdateData = data.filter(entry => Object)
-            let mergeDbAndEntryData = Object.assign({}, )
-            //return updatedData = Object.assign({}, entryData, filterEmp, updated_on, open);
+            let filterUpdateData = Object.keys(data).filter(function(key) {
+                return data[key] !== '';
+            }).map(function(key) {
+                return { [key]: data[key]};
+            });
+
+            let parseUpdateData = JSON.parse(filterUpdateData);
+            let mergeDbAndEntryData = Object.assign({}, entryData, parseUpdateData);
+            return updatedData = Object.assign({}, mergeDbAndEntryData, updated_on, open);
         } 
     };
 }
