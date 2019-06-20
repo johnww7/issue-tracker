@@ -63,10 +63,11 @@ function IssueController() {
                 return data[key] !== '';
             }).map(function(key) {
                 return { [key]: data[key]};
-            });
+            }).reduce((acc, curr) => ({ ...acc, [curr]: curr}), {});
 
-            let parseUpdateData = JSON.parse(filterUpdateData);
-            let mergeDbAndEntryData = Object.assign({}, entryData, parseUpdateData);
+            //let parseUpdateData = JSON.parse(filterUpdateData);
+            console.log('filtered fields: ' + JSON.stringify(filterUpdateData));
+            let mergeDbAndEntryData = Object.assign({}, entryData, filterUpdateData);
             return updatedData = Object.assign({}, mergeDbAndEntryData, updated_on, open);
         } 
     };
