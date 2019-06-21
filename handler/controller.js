@@ -63,7 +63,11 @@ function IssueController() {
                 return data[key] !== '';
             }).map(function(key) {
                 return { [key]: data[key]};
-            }).reduce((acc, curr) => ({ ...acc, [curr]: curr}), {});
+            }).reduce(function(acc, curr) {
+                let fieldKey = Object.keys(curr)[0];
+                acc[fieldKey] = curr[fieldKey];
+                return acc;
+            }, {});
 
             //let parseUpdateData = JSON.parse(filterUpdateData);
             console.log('filtered fields: ' + JSON.stringify(filterUpdateData));

@@ -75,10 +75,12 @@ module.exports = function (app) {
                 console.log('Successful database connection!');
                 db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
                   if (err) {console.log(err);}
+                  console.log('Results of findOne: ' + JSON.stringify(res));
                   let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
                   console.log('Results: ' + JSON.stringify(updatedIssue));
-                  if(res._id === null) {
-                    result = {result: 'could not update' + res._id};
+                  
+                  if(res == null) {
+                    result = {result: 'could not update' + issueData._id};
                     //res.json({result: 'could not update' + res.id});
                     db.close();
                     //res.json({result: 'could not update' + res._id})
