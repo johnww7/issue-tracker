@@ -79,13 +79,16 @@ module.exports = function (app) {
                   let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
                   console.log('Results: ' + JSON.stringify(updatedIssue));
                   
-                  if(res == null) {
-                    result = {result: 'could not update' + issueData._id};
+                  if(updatedIssue.result === 'could not update') {
+                    let noUpdateReturn = updatedIssue.result + ' ' + issueData._id;
+                    console.log('no update: ' + noUpdateReturn)
+                    result = {result: noUpdateReturn};
                     //res.json({result: 'could not update' + res.id});
                     db.close();
                     //res.json({result: 'could not update' + res._id})
                   }
                   else if(Object.keys(updatedIssue).length == 1 && issueData._id !== undefined){
+                    console.log('no updated field');
                     result = {update: 'no updated field sent'};
                     //res.json({result: 'no updated field sent'});
                     db.close();

@@ -51,8 +51,15 @@ function IssueController() {
         let issueDataValues = Object.values(data);
         const filterEmptyFields = issueDataValues.filter(entry => entry !== '');
         console.log('Length of field: ' + filterEmptyFields);
-        if(Object.keys(filterEmptyFields).length == 1 && data._id !== undefined) {
-            console.log('Cannot update');
+        if(entryData === null) {
+            console.log('Could not update');
+            //let noUpdate = 'could not update' + entryData._id;
+            return updatedData = {
+                result: 'could not update'
+            }
+        }
+        else if(Object.keys(filterEmptyFields).length == 1 && data._id !== undefined) {
+            console.log('No update sent');
             return updatedData = {
                 update: 'no updated field sent'
             };
