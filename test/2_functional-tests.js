@@ -176,11 +176,29 @@ suite('Functional Tests', function() {
     suite.skip('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
-        
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({
+          _id: ''
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, '_id error');
+          done();
+        });
       });
       
       test('Valid _id', function(done) {
-        
+        chai.request(server)
+        .delete('/api/issues/test')
+        .send({
+          _id: '32dAxmWn4G'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.success, 'deleted 2dAxmWn4G');
+          done();
+        });
       });
       
     });

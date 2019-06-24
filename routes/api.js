@@ -121,7 +121,18 @@ module.exports = function (app) {
         
         .delete(function (req, res){
           let project = req.params.project;
+          let deleteIssue = req.body;
           console.log('Delete: ' + project);
+          console.log('Issue to delete: ' + deleteIssue);
+          
+          MongoClient.connect(MONGO_URI, (err, db) => {
+            if(err) {
+              console.log('Database error: ' + err);
+            }
+            else {
+              
+            }
+          });
         });
     
    
