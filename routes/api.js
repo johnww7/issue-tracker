@@ -122,17 +122,42 @@ module.exports = function (app) {
         .delete(function (req, res){
           let project = req.params.project;
           let deleteIssue = req.body;
+          let deleteResult;
           console.log('Delete: ' + project);
           console.log('Issue to delete: ' + deleteIssue);
+
           
-          MongoClient.connect(MONGO_URI, (err, db) => {
-            if(err) {
-              console.log('Database error: ' + err);
-            }
-            else {
-              
-            }
-          });
+          if(deleteIssue._id === '' || deleteIssue._id === null) {
+            res.json({result: '_id error'});
+          }
+          else {
+            MongoClient.connect(MONGO_URI, (err, db) => {
+              if(err) {
+                console.log('Database error: ' + err);
+              }
+              console.log('Successful database connection!');
+              db.collection(project).deleteOne({_id: deleteIssue._id},(err, resObj) => {
+                if(err) { console.log(err); }
+
+                if(resObj.deletedCount == 1 || resObj.deletedCount === '1'){
+                  console.log('deleted ' + deleteIssue._id);
+                  deleteResult = {
+                    success: 'deleted ' + deleteIssue._id
+                  };
+                  db.close();
+                }
+                else {
+                  console.log('could not delete ' + deleteIssue._id);
+                  deleteResult = {
+                    failed: 'could not delete ' + deleteIssue._id
+                  };
+                  db.close();
+                }
+              });
+            });
+            res.json(deleteResult);
+          }
+
         });
     
    
