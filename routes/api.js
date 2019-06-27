@@ -56,18 +56,14 @@ module.exports = function (app) {
           }
         })
         
-        .put(function (req, res){
+        .put(function (req, res) {
           let project = req.params.project;
           let issueData = req.body;
           console.log('Put: ' + project);
           console.log('put data: ' + JSON.stringify(issueData));
 
-         // let updatedIssue = issueController.checkUpdatedIssue(issueData);
-          //console.log('Body length: ' + Object.keys(issueData).length + ' _id: ' + issueData._id);
             let result;
             MongoClient.connect(MONGO_URI, (err, db) => {
-            //res.json({result: 'successfully updated'});
-            
               if(err) {
                 console.log('Database error: ' + err);
               }
@@ -107,16 +103,12 @@ module.exports = function (app) {
                     });
                     
                   }
-                   
                   //db.close();
                 });
-                 
               }
-              
             });
             console.log('Results of update: ' + result);
             res.json(result);  
-          
         })
         
         .delete(function (req, res){
@@ -136,26 +128,40 @@ module.exports = function (app) {
                 console.log('Database error: ' + err);
               }
               console.log('Successful database connection!');
-              db.collection(project).deleteOne({_id: deleteIssue._id},(err, resObj) => {
+              let deleteQuery = {_id: ObjectId(deleteIssue._id)};
+              db.collection(project).deleteOne(deleteQuery, function(err,resObj) {
                 if(err) { console.log(err); }
 
-                if(resObj.deletedCount == 1 || resObj.deletedCount === '1'){
+                if (resObj.deletedCount == 1 || resObj.deletedCount === '1'){
                   console.log('deleted ' + deleteIssue._id);
-                  deleteResult = {
+                  deleteResult = 1;
+                 /* deleteResult = {
                     success: 'deleted ' + deleteIssue._id
-                  };
-                  db.close();
+                  };*/
+                  
                 }
                 else {
                   console.log('could not delete ' + deleteIssue._id);
-                  deleteResult = {
+                  deleteResult = 0;
+                  /*deleteResult = {
                     failed: 'could not delete ' + deleteIssue._id
-                  };
-                  db.close();
+                  };*/
+                  
                 }
+                db.close();
               });
             });
-            res.json(deleteResult);
+            if(deleteResult = 1){
+              let success = 'deleted ' + deleteIssue._id;
+              res.json({
+                success
+              });
+            }
+            else {
+              let failed = 'could not delete ' + deleteIssue._id;
+              res.json(failed);
+            }
+            
           }
 
         });
