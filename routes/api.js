@@ -116,9 +116,9 @@ module.exports = function (app) {
           let deleteIssue = req.body;
           let deleteResult;
           console.log('Delete: ' + project);
-          console.log('Issue to delete: ' + deleteIssue);
+          console.log('Issue to delete: ' + JSON.stringify(deleteIssue));
 
-          
+          /*
           if(deleteIssue._id === '' || deleteIssue._id === null) {
             res.json({result: '_id error'});
           }
@@ -135,23 +135,20 @@ module.exports = function (app) {
                 if (resObj.deletedCount == 1 || resObj.deletedCount === '1'){
                   console.log('deleted ' + deleteIssue._id);
                   deleteResult = 1;
-                 /* deleteResult = {
-                    success: 'deleted ' + deleteIssue._id
-                  };*/
+                 //deleteResult = {success: 'deleted ' + deleteIssue._id};
                   
                 }
                 else {
                   console.log('could not delete ' + deleteIssue._id);
                   deleteResult = 0;
-                  /*deleteResult = {
-                    failed: 'could not delete ' + deleteIssue._id
-                  };*/
+                  //deleteResult = {failed: 'could not delete ' + deleteIssue._id};
                   
                 }
                 db.close();
               });
-            });
-            if(deleteResult = 1){
+            });*/
+            //res.json({succes: 'success deleted'});
+            /*if(deleteResult = 1){
               let success = 'deleted ' + deleteIssue._id;
               res.json({
                 success
@@ -160,9 +157,9 @@ module.exports = function (app) {
             else {
               let failed = 'could not delete ' + deleteIssue._id;
               res.json(failed);
-            }
+            }*/
             
-          }
+          //}
 
         });
     
