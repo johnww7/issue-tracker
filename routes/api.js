@@ -118,7 +118,7 @@ module.exports = function (app) {
           console.log('Delete: ' + project);
           console.log('Issue to delete: ' + JSON.stringify(deleteIssue));
 
-          /*
+          
           if(deleteIssue._id === '' || deleteIssue._id === null) {
             res.json({result: '_id error'});
           }
@@ -129,7 +129,7 @@ module.exports = function (app) {
               }
               console.log('Successful database connection!');
               let deleteQuery = {_id: ObjectId(deleteIssue._id)};
-              db.collection(project).deleteOne(deleteQuery, function(err,resObj) {
+              db.collection(project).deleteOne(deleteIssue._id, function(err,resObj) {
                 if(err) { console.log(err); }
 
                 if (resObj.deletedCount == 1 || resObj.deletedCount === '1'){
@@ -146,20 +146,19 @@ module.exports = function (app) {
                 }
                 db.close();
               });
-            });*/
+            });
             //res.json({succes: 'success deleted'});
-            /*if(deleteResult = 1){
+            if(deleteResult = 1){
               let success = 'deleted ' + deleteIssue._id;
-              res.json({
-                success
-              });
+              res.json({success});
+              
             }
             else {
               let failed = 'could not delete ' + deleteIssue._id;
-              res.json(failed);
-            }*/
+              res.json({failed});
+            }
             
-          //}
+          }
 
         });
     
