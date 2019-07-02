@@ -39,6 +39,7 @@ module.exports = function (app) {
             res.json(submitIssue);
           }
           else{
+            let issueInserted;
             MongoClient.connect(MONGO_URI, (err, db) => {
               if(err) {
                 console.log('Database error: ' + err);
@@ -48,11 +49,14 @@ module.exports = function (app) {
                 db.collection(project).insertOne(submitIssue, (err, res) => {
                   if (err) { console.log(err); }
                   console.log("1 issue inserted");
+                  issueInserted = res.ops[0];
+                  console.log(res.ops);
+                  res.send(issueInserted);
                   db.close();
                 });
               }
             });
-            res.json(submitIssue);
+            //res.json({issueInserted});
           }
         })
         

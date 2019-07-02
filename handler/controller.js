@@ -25,8 +25,9 @@ function IssueController() {
             };
         }
         else {
+            //_id: shortid.generate(),
             return returnData = {
-                _id: shortid.generate(),
+                
                 issue_title: data.issue_title,
                 issue_text: data.issue_text,
                 created_on: new Date(),
