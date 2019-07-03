@@ -49,14 +49,16 @@ module.exports = function (app) {
                 db.collection(project).insertOne(submitIssue, (err, res) => {
                   if (err) { console.log(err); }
                   console.log("1 issue inserted");
-                  issueInserted = res.ops[0];
-                  console.log(res.ops);
-                  res.send(issueInserted);
+                  issueInserted = JSON.stringify(res.ops[0]._id);
+                  console.log('id: ' + issueInserted);
+                 // res.send(issueInserted);
                   db.close();
                 });
               }
             });
-            //res.json({issueInserted});
+            let postedIssue = {_id: issueInserted, ... submitIssue}
+            console.log('posted: ' + JSON.stringify(postedIssue));
+            res.json(postedIssue);
           }
         })
         
