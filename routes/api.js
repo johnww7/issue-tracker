@@ -52,11 +52,12 @@ module.exports = function (app) {
                   issueInserted = JSON.stringify(res.ops[0]._id);
                   console.log('id: ' + issueInserted);
                  // res.send(issueInserted);
-                  db.close();
+                  //db.close();
                 });
               }
             });
-            let postedIssue = {_id: issueInserted, ... submitIssue}
+            //let postedIssue = {_id: issueInserted, ... submitIssue}
+            let postedIssue = Object.assign({}, issueInserted, submitIssue);
             console.log('posted: ' + JSON.stringify(postedIssue));
             res.json(postedIssue);
           }
