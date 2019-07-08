@@ -54,8 +54,8 @@ module.exports = function (app) {
                       }
                       else {
                         console.log("1 issue inserted");
-                        issueInserted = res.ops[0];
-                        console.log('id: ' + issueInserted);
+                        issueInserted = res.ops[0]._id;
+                        console.log('id: ' + res.ops[0]._id);
                         resolve(issueInserted);
                       }
                     });
@@ -69,28 +69,19 @@ module.exports = function (app) {
                 
                 insertPromise().then(function(promResult) {
                   db.close();
-                  let postedIssue = Object.assign({}, issueInserted, submitIssue);
+                  let postedIssue = Object.assign({}, {_id: promResult}, submitIssue);
                   console.log('posted: ' + JSON.stringify(postedIssue));
-                  res.json(promResult);
+                  //console.log('posted: ' + JSON.stringify(promResult));
+                  //res.json(promResult);
+                  res.json(postedIssue);
                 });
-                /*db.collection(project).insertOne(submitIssue, (err, res) => {
-                  if (err) { console.log(err); }
-                  console.log("1 issue inserted");
-                  issueInserted = JSON.stringify(res.ops[0]._id);
-                  console.log('id: ' + issueInserted);
-                // res.send(issueInserted);
-                  //db.close();
-                });*/
+                
                   
               });
             } catch(e) {
               next(e)
             }
             
-            //let postedIssue = {_id: issueInserted, ... submitIssue}
-            /*let postedIssue = Object.assign({}, issueInserted, submitIssue);
-            console.log('posted: ' + JSON.stringify(postedIssue));
-            res.json(postedIssue);*/
           }
         })
         
