@@ -46,7 +46,7 @@ module.exports = function (app) {
                   console.log('Database error: ' + err);
                 }
                 console.log('Successful database connection!');
-                var myPromise = () => {
+                let myPromise = () => {
                   return new Promise((resolve, reject) => {
                     db.collection(project).insertOne(submitIssue, (err, res) => {
                       if (err) { 
@@ -91,51 +91,73 @@ module.exports = function (app) {
           console.log('Put: ' + project);
           console.log('put data: ' + JSON.stringify(issueData));
 
-            let result;
+          let result;
+          try {
             MongoClient.connect(MONGO_URI, (err, db) => {
               if(err) {
                 console.log('Database error: ' + err);
               }
-              else {
-                console.log('Successful database connection!');
-                db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
-                  if (err) {console.log(err);}
-                  console.log('Results of findOne: ' + JSON.stringify(res));
-                  let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
-                  console.log('Results: ' + JSON.stringify(updatedIssue));
-                  
-                  if(updatedIssue.result === 'could not update') {
-                    let noUpdateReturn = updatedIssue.result + ' ' + issueData._id;
-                    console.log('no update: ' + noUpdateReturn)
-                    result = {result: noUpdateReturn};
-                    //res.json({result: 'could not update' + res.id});
-                    db.close();
-                    //res.json({result: 'could not update' + res._id})
-                  }
-                  else if(Object.keys(updatedIssue).length == 1 && issueData._id !== undefined){
-                    console.log('no updated field');
-                    result = {update: 'no updated field sent'};
-                    //res.json({result: 'no updated field sent'});
-                    db.close();
-                  }
-                  else {
-                    let updateCollection = updatedIssue;
-                    console.log('Update info: ' + JSON.stringify(updateCollection));
-                    db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
-                      if(err) {console.log(err);}
-                      result = {result: 'successfully updated'};
-                      //res.json({result: 'successfully updated'});
-                      console.log("Updated: " + JSON.stringify(data));         
-                      console.log('1 updated occured');
-                      //res.json({result: 'successfully updated'});
-                      db.close();
-                    });
-                    
-                  }
-                  //db.close();
+              
+              console.log('Successful database connection!');
+              let myPromise = () => {
+                return new Promise((resolve, reject) => {
+                  db.collection(project).findOne({_id: issueData._id}, (err, res) => {
+                    if(err){ console.log(err); }
+                    console.log('Results of findOne: ' + JSON.stringify(res));
+                    let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
+                    console.log('Results: ' + JSON.stringify(updatedIssue));
+                  });
                 });
-              }
+              };
             });
+          }
+          catch (e) {
+
+          }
+            /*MongoClient.connect(MONGO_URI, (err, db) => {
+              if(err) {
+                console.log('Database error: ' + err);
+              }
+              
+              console.log('Successful database connection!');
+              db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
+                if (err) {console.log(err);}
+                console.log('Results of findOne: ' + JSON.stringify(res));
+                let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
+                console.log('Results: ' + JSON.stringify(updatedIssue));
+                
+                if(updatedIssue.result === 'could not update') {
+                  let noUpdateReturn = updatedIssue.result + ' ' + issueData._id;
+                  console.log('no update: ' + noUpdateReturn)
+                  result = {result: noUpdateReturn};
+                  //res.json({result: 'could not update' + res.id});
+                  db.close();
+                  //res.json({result: 'could not update' + res._id})
+                }
+                else if(Object.keys(updatedIssue).length == 1 && issueData._id !== undefined){
+                  console.log('no updated field');
+                  result = {update: 'no updated field sent'};
+                  //res.json({result: 'no updated field sent'});
+                  db.close();
+                }
+                else {
+                  let updateCollection = updatedIssue;
+                  console.log('Update info: ' + JSON.stringify(updateCollection));
+                  db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
+                    if(err) {console.log(err);}
+                    result = {result: 'successfully updated'};
+                    //res.json({result: 'successfully updated'});
+                    console.log("Updated: " + JSON.stringify(data));         
+                    console.log('1 updated occured');
+                    //res.json({result: 'successfully updated'});
+                    db.close();
+                  });
+                  
+                }
+                //db.close();
+              });
+              
+            });*/
             console.log('Results of update: ' + result);
             res.json(result);  
         })
