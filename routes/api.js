@@ -100,13 +100,31 @@ module.exports = function (app) {
               
               console.log('Successful database connection!');
               let myPromise = () => {
-                return new Promise((resolve, reject) => {
+                new Promise((resolve, reject) => {
                   db.collection(project).findOne({_id: issueData._id}, (err, res) => {
                     if(err){ console.log(err); }
-                    console.log('Results of findOne: ' + JSON.stringify(res));
-                    let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
-                    console.log('Results: ' + JSON.stringify(updatedIssue));
-                  });
+                    if(!res) {
+                      return "could not update";
+                    }
+                    else {
+                      return res;
+                    }
+                    //console.log('Results of findOne: ' + JSON.stringify(res));
+                    //let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
+                    //console.log('Results: ' + JSON.stringify(updatedIssue));
+                  }).then(function(findResult) {
+                    let updatedIssue = issueController.checkUpdatedIssue(findResult, issueData);
+                    if(updatedIssue.result === 'could not update') {
+                      let returnResult = 'Could not update ' + issueData._id;
+                      resolve(returnResult);
+                    }
+                    else if(updatedIssue.update === 'no updated field sent') {
+                      
+                    }
+                    else {
+
+                    }
+                  })
                 });
               };
             });
@@ -215,3 +233,4 @@ module.exports = function (app) {
     
    
 };
+
