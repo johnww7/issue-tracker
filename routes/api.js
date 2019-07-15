@@ -101,42 +101,19 @@ module.exports = function (app) {
               console.log('Successful database connection!');
               let myPromise = () => {
                 return new Promise((resolve, reject) => {
-                  db.collection(project).findOne({_id: issueData._id}, (err, res) => {
-                    if(err){ console.log(err); }
-                    if(!res) {
-                      return "could not update";
-                    }
+                  db.collection(project).updateOne({_id: issueData._id}, (err, data) => {
+                    if(err) {reject(err)}
                     else {
-                      return res;
+                    //result = {result: 'successfully updated'};
+                    //res.json({result: 'successfully updated'});
+                    console.log("Updated: " + JSON.stringify(data));         
+                    console.log('1 updated occured');
+                    //res.json({result: 'successfully updated'});
+                    //db.close();
+                      
+                      resolve(data);
                     }
-                    //console.log('Results of findOne: ' + JSON.stringify(res));
-                    //let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
-                    //console.log('Results: ' + JSON.stringify(updatedIssue));
-                  }).then(function(findResult) {
-                    let updatedIssue = issueController.checkUpdatedIssue(findResult, issueData);
-                    if(updatedIssue.result === 'could not update') {
-                      let returnResult = {update: 'Could not update ' + issueData._id};
-                      resolve(returnResult);
-                    }
-                    else if(updatedIssue.update === 'no updated field sent') {
-                      let noResult = {update: 'no updated field sent'};
-                      resolve(noResult);
-                    }
-                    else {
-                      db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
-                        if(err) {console.log(err);}
-                        else {
-                        result = {result: 'successfully updated'};
-                        //res.json({result: 'successfully updated'});
-                        console.log("Updated: " + JSON.stringify(data));         
-                        console.log('1 updated occured');
-                        //res.json({result: 'successfully updated'});
-                        //db.close();
-                          resolve(result);
-                        }
-                      });
-                    }
-                  })
+                  });
                 });
               };
 
