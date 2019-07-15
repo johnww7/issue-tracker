@@ -100,7 +100,7 @@ module.exports = function (app) {
               
               console.log('Successful database connection!');
               let myPromise = () => {
-                new Promise((resolve, reject) => {
+                return new Promise((resolve, reject) => {
                   db.collection(project).findOne({_id: issueData._id}, (err, res) => {
                     if(err){ console.log(err); }
                     if(!res) {
@@ -115,22 +115,49 @@ module.exports = function (app) {
                   }).then(function(findResult) {
                     let updatedIssue = issueController.checkUpdatedIssue(findResult, issueData);
                     if(updatedIssue.result === 'could not update') {
-                      let returnResult = 'Could not update ' + issueData._id;
+                      let returnResult = {update: 'Could not update ' + issueData._id};
                       resolve(returnResult);
                     }
                     else if(updatedIssue.update === 'no updated field sent') {
-                      
+                      let noResult = {update: 'no updated field sent'};
+                      resolve(noResult);
                     }
                     else {
-
+                      db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
+                        if(err) {console.log(err);}
+                        else {
+                        result = {result: 'successfully updated'};
+                        //res.json({result: 'successfully updated'});
+                        console.log("Updated: " + JSON.stringify(data));         
+                        console.log('1 updated occured');
+                        //res.json({result: 'successfully updated'});
+                        //db.close();
+                          resolve(result);
+                        }
+                      });
                     }
                   })
                 });
               };
+
+              let updatePromise = async() => { 
+                let resultUpdate = await (myPromise());
+                return resultUpdate;
+              };
+              
+              updatePromise().then(function(promResult) {
+                db.close();
+                console.log('update result: ' + promResult);
+                //let postedIssue = Object.assign({}, {_id: promResult}, submitIssue);
+                //console.log('posted: ' + JSON.stringify(postedIssue));
+                //console.log('posted: ' + JSON.stringify(promResult));
+                //res.json(promResult);
+                res.json(promResult);
+              });                
             });
           }
           catch (e) {
-
+            next(e);
           }
             /*MongoClient.connect(MONGO_URI, (err, db) => {
               if(err) {
