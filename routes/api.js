@@ -102,7 +102,9 @@ module.exports = function (app) {
               let myPromise = () => {
                 return new Promise((resolve, reject) => {
                   db.collection(project).updateOne({_id: issueData._id}, (err, data) => {
-                    if(err) {reject(err)}
+                    if(err) {
+                      reject(err);
+                    }
                     else {
                     //result = {result: 'successfully updated'};
                     //res.json({result: 'successfully updated'});
@@ -119,6 +121,7 @@ module.exports = function (app) {
 
               let updatePromise = async() => { 
                 let resultUpdate = await (myPromise());
+                console.log('returned data: ' + resultUpdate);
                 return resultUpdate;
               };
               
