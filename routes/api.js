@@ -99,9 +99,10 @@ module.exports = function (app) {
               }
               
               console.log('Successful database connection!');
+              let updateDataToSend = issueController.updateIssue(issueData);
               let myPromise = () => {
                 return new Promise((resolve, reject) => {
-                  db.collection(project).updateOne({_id: issueData._id}, (err, data) => {
+                  db.collection(project).updateOne({_id: issueData._id}, updateDataToSend, (err, data) => {
                     if(err) {
                       reject(err);
                     }
@@ -128,11 +129,21 @@ module.exports = function (app) {
               updatePromise().then(function(promResult) {
                 db.close();
                 console.log('update result: ' + promResult);
+                let updateResult;
+                if(promResult.nMatched == 1 && promResult.nModified == 1){
+                  updateResult = {result: 'successfully updated'};
+                }
+                else if(promResult.nMatched == 1 && promResult.nModified == 0) {
+                  updateResult = {result: 'no updated field sent'};
+                }
+                else {
+                  updateResult = {result: 'could not update ' + issueData._id};
+                }
                 //let postedIssue = Object.assign({}, {_id: promResult}, submitIssue);
                 //console.log('posted: ' + JSON.stringify(postedIssue));
                 //console.log('posted: ' + JSON.stringify(promResult));
                 //res.json(promResult);
-                res.json(promResult);
+                res.json(updateResult);
               });                
             });
           }

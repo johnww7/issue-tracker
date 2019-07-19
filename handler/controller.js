@@ -42,7 +42,7 @@ function IssueController() {
         //return issue;
     };
 
-    this.checkUpdatedIssue = function(entryData, data) {
+    this.checkIssue = function(entryData, data) {
         let updated_on = {updated_on: new Date()};
         let open = {open: (data.open || true)};
         let updatedData;
@@ -82,6 +82,30 @@ function IssueController() {
             let mergeDbAndEntryData = Object.assign({}, entryData, filterUpdateData);
             return updatedData = Object.assign({}, mergeDbAndEntryData, updated_on, open);
         } 
+    };
+    this.updateIssue = function(entryData) {
+        let updated_on = {updated_on: new Date()};
+        let open = {open: (entryData.open || true)};
+        console.log('Update data from issue: ' + JSON.stringify(entryData));
+
+        let filterUpdateData = Object.keys(entryData).filter(function(key) {
+            return entryData[key] !== '';
+        }).map(function(key) {
+            return { [key]: entryData[key]};
+        }).reduce(function(acc, curr) {
+            let fieldKey = Object.keys(curr)[0];
+            acc[fieldKey] = curr[fieldKey];
+            return acc;
+        }, {});
+
+        console.log('filtered fields: ' + JSON.stringify(filterUpdateData));
+        if(Object.keys(filterUpdateData).length == 1) {
+            return {_id: filterUpdateData._id};
+        }
+        else {
+            let updateData = Object.assign({}, filterUpdateData, updated_on, open);
+            return updateData;
+        }
     };
 }
 
