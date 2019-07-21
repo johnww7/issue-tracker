@@ -88,6 +88,7 @@ module.exports = function (app) {
         .put(function (req, res) {
           let project = req.params.project;
           let issueData = req.body;
+          let idSearch = issueData._id;
           console.log('Put: ' + project);
           console.log('put data: ' + JSON.stringify(issueData));
 
@@ -100,9 +101,10 @@ module.exports = function (app) {
               
               console.log('Successful database connection!');
               let updateDataToSend = issueController.updateIssue(issueData);
+              console.log('updateData type: ' + typeof(updateDataToSend));
               let myPromise = () => {
                 return new Promise((resolve, reject) => {
-                  db.collection(project).updateOne({_id: issueData._id}, updateDataToSend, (err, data) => {
+                  db.collection(project).updateOne({"_id": ObjectId(req.body._id)}, {$set: updateDataToSend}, (err, data) => {
                     if(err) {
                       reject(err);
                     }
@@ -130,10 +132,10 @@ module.exports = function (app) {
                 db.close();
                 console.log('update result: ' + promResult);
                 let updateResult;
-                if(promResult.nMatched == 1 && promResult.nModified == 1){
+                if(promResult.n == 1 && promResult.nModified == 1){
                   updateResult = {result: 'successfully updated'};
                 }
-                else if(promResult.nMatched == 1 && promResult.nModified == 0) {
+                else if(promResult.n == 1 && promResult.nModified == 0) {
                   updateResult = {result: 'no updated field sent'};
                 }
                 else {
@@ -194,8 +196,7 @@ module.exports = function (app) {
               });
               
             });*/
-            console.log('Results of update: ' + result);
-            res.json(result);  
+             
         })
         
         .delete(function (req, res){

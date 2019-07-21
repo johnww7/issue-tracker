@@ -89,7 +89,7 @@ function IssueController() {
         console.log('Update data from issue: ' + JSON.stringify(entryData));
 
         let filterUpdateData = Object.keys(entryData).filter(function(key) {
-            return entryData[key] !== '';
+            return entryData[key] !== '' && key !== '_id';
         }).map(function(key) {
             return { [key]: entryData[key]};
         }).reduce(function(acc, curr) {
@@ -104,6 +104,8 @@ function IssueController() {
         }
         else {
             let updateData = Object.assign({}, filterUpdateData, updated_on, open);
+            //let updateData = {$set: update};
+            console.log('Sending for update' + JSON.stringify(updateData));
             return updateData;
         }
     };
