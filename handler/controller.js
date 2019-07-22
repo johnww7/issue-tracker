@@ -99,8 +99,8 @@ function IssueController() {
         }, {});
 
         console.log('filtered fields: ' + JSON.stringify(filterUpdateData));
-        if(Object.keys(filterUpdateData).length == 1) {
-            return {_id: filterUpdateData._id};
+        if(Object.keys(filterUpdateData).length == 0) {
+            return {fail: 'no fields'};
         }
         else {
             let updateData = Object.assign({}, filterUpdateData, updated_on, open);

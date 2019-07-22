@@ -104,21 +104,26 @@ module.exports = function (app) {
               console.log('updateData type: ' + typeof(updateDataToSend));
               let myPromise = () => {
                 return new Promise((resolve, reject) => {
-                  db.collection(project).updateOne({"_id": ObjectId(req.body._id)}, {$set: updateDataToSend}, (err, data) => {
-                    if(err) {
-                      reject(err);
-                    }
-                    else {
-                    //result = {result: 'successfully updated'};
-                    //res.json({result: 'successfully updated'});
-                    console.log("Updated: " + JSON.stringify(data));         
-                    console.log('1 updated occured');
-                    //res.json({result: 'successfully updated'});
-                    //db.close();
-                      
-                      resolve(data);
-                    }
-                  });
+                  if(updateDataToSend.fail === 'no fields'){
+                    resolve({matchedCount: 1, modifiedCount: 0})
+                  }
+                  else {
+                    db.collection(project).updateOne({"_id": ObjectId(req.body._id)}, {$set: updateDataToSend}, (err, data) => {
+                      if(err) {
+                        reject(err);
+                      }
+                      else {
+                      //result = {result: 'successfully updated'};
+                      //res.json({result: 'successfully updated'});
+                      console.log("Updated: " + JSON.stringify(data));         
+                      console.log('1 updated occured');
+                      //res.json({result: 'successfully updated'});
+                      //db.close();
+                        
+                        resolve(data);
+                      }
+                    });
+                  }
                 });
               };
 
@@ -130,12 +135,12 @@ module.exports = function (app) {
               
               updatePromise().then(function(promResult) {
                 db.close();
-                console.log('update result: ' + promResult);
+                console.log('update result: ' + promResult.matchedCount + ' modified: ' + promResult.modifiedCount);
                 let updateResult;
-                if(promResult.n == 1 && promResult.nModified == 1){
+                if(promResult.matchedCount == 1 && promResult.modifiedCount == 1){
                   updateResult = {result: 'successfully updated'};
                 }
-                else if(promResult.n == 1 && promResult.nModified == 0) {
+                else if(promResult.matchedCount == 1 && promResult.modifiedCount == 0) {
                   updateResult = {result: 'no updated field sent'};
                 }
                 else {
@@ -152,50 +157,7 @@ module.exports = function (app) {
           catch (e) {
             next(e);
           }
-            /*MongoClient.connect(MONGO_URI, (err, db) => {
-              if(err) {
-                console.log('Database error: ' + err);
-              }
-              
-              console.log('Successful database connection!');
-              db.collection(project).findOne({_id: issueData._id}, (err, res) =>{
-                if (err) {console.log(err);}
-                console.log('Results of findOne: ' + JSON.stringify(res));
-                let updatedIssue = issueController.checkUpdatedIssue(res,issueData);
-                console.log('Results: ' + JSON.stringify(updatedIssue));
-                
-                if(updatedIssue.result === 'could not update') {
-                  let noUpdateReturn = updatedIssue.result + ' ' + issueData._id;
-                  console.log('no update: ' + noUpdateReturn)
-                  result = {result: noUpdateReturn};
-                  //res.json({result: 'could not update' + res.id});
-                  db.close();
-                  //res.json({result: 'could not update' + res._id})
-                }
-                else if(Object.keys(updatedIssue).length == 1 && issueData._id !== undefined){
-                  console.log('no updated field');
-                  result = {update: 'no updated field sent'};
-                  //res.json({result: 'no updated field sent'});
-                  db.close();
-                }
-                else {
-                  let updateCollection = updatedIssue;
-                  console.log('Update info: ' + JSON.stringify(updateCollection));
-                  db.collection(project).updateOne({_id: res._id}, updateCollection, (err, data) => {
-                    if(err) {console.log(err);}
-                    result = {result: 'successfully updated'};
-                    //res.json({result: 'successfully updated'});
-                    console.log("Updated: " + JSON.stringify(data));         
-                    console.log('1 updated occured');
-                    //res.json({result: 'successfully updated'});
-                    db.close();
-                  });
-                  
-                }
-                //db.close();
-              });
-              
-            });*/
+           
              
         })
         
