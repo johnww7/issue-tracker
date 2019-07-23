@@ -13,8 +13,8 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var Controller = require('../handler/controller.js');
 
-//const MONGO_URI = process.env.MONGO_URI; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
- const MONGO_URI = "mongodb://john:N1teLockon@ds035787.mlab.com:35787/jwfccmongodb";
+  const MONGO_URI = process.env.MONGO_URI; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+
  var issueController = new Controller();
 
 module.exports = function (app) {
@@ -108,19 +108,17 @@ module.exports = function (app) {
                     resolve({matchedCount: 1, modifiedCount: 0})
                   }
                   else {
+                    
                     db.collection(project).updateOne({"_id": ObjectId(req.body._id)}, {$set: updateDataToSend}, (err, data) => {
                       if(err) {
                         reject(err);
                       }
                       else {
-                      //result = {result: 'successfully updated'};
-                      //res.json({result: 'successfully updated'});
+                    
                       console.log("Updated: " + JSON.stringify(data));         
                       console.log('1 updated occured');
-                      //res.json({result: 'successfully updated'});
-                      //db.close();
-                        
-                        resolve(data);
+
+                      resolve(data);
                       }
                     });
                   }
@@ -146,10 +144,7 @@ module.exports = function (app) {
                 else {
                   updateResult = {result: 'could not update ' + issueData._id};
                 }
-                //let postedIssue = Object.assign({}, {_id: promResult}, submitIssue);
-                //console.log('posted: ' + JSON.stringify(postedIssue));
-                //console.log('posted: ' + JSON.stringify(promResult));
-                //res.json(promResult);
+
                 res.json(updateResult);
               });                
             });

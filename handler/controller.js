@@ -42,47 +42,7 @@ function IssueController() {
         //return issue;
     };
 
-    this.checkIssue = function(entryData, data) {
-        let updated_on = {updated_on: new Date()};
-        let open = {open: (data.open || true)};
-        let updatedData;
-        console.log('Update data from issue: ' + JSON.stringify(data));
-        console.log('Data from db: ' + JSON.stringify(entryData));
-
-        let issueDataValues = Object.values(data);
-        const filterEmptyFields = issueDataValues.filter(entry => entry !== '');
-        console.log('Length of field: ' + filterEmptyFields);
-        if(entryData === null) {
-            console.log('Could not update');
-            //let noUpdate = 'could not update' + entryData._id;
-            return updatedData = {
-                result: 'could not update'
-            }
-        }
-        else if(Object.keys(filterEmptyFields).length == 1 && data._id !== undefined) {
-            console.log('No update sent');
-            return updatedData = {
-                update: 'no updated field sent'
-            };
-        }
-        else {
-            console.log('Can make an update');
-            let filterUpdateData = Object.keys(data).filter(function(key) {
-                return data[key] !== '';
-            }).map(function(key) {
-                return { [key]: data[key]};
-            }).reduce(function(acc, curr) {
-                let fieldKey = Object.keys(curr)[0];
-                acc[fieldKey] = curr[fieldKey];
-                return acc;
-            }, {});
-
-            //let parseUpdateData = JSON.parse(filterUpdateData);
-            console.log('filtered fields: ' + JSON.stringify(filterUpdateData));
-            let mergeDbAndEntryData = Object.assign({}, entryData, filterUpdateData);
-            return updatedData = Object.assign({}, mergeDbAndEntryData, updated_on, open);
-        } 
-    };
+    
     this.updateIssue = function(entryData) {
         let updated_on = {updated_on: new Date()};
         let open = {open: (entryData.open || true)};
