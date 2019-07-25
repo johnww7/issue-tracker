@@ -107,6 +107,9 @@ module.exports = function (app) {
                   if(updateDataToSend.fail === 'no fields'){
                     resolve({matchedCount: 1, modifiedCount: 0})
                   }
+                  else if(!ObjectId.isValid(req.body._id)){
+                    resolve({matchedCount: 0, modifiedCount: 0});
+                  }
                   else {
                     
                     db.collection(project).updateOne({"_id": ObjectId(req.body._id)}, {$set: updateDataToSend}, (err, data) => {
