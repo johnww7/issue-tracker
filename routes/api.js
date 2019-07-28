@@ -164,7 +164,7 @@ module.exports = function(app) {
       let deleteIssue = req.body;
       let deleteResult;
       console.log("Delete: " + project);
-      console.log("Issue to delete: " + JSON.stringify(deleteIssue));
+      console.log("Issue to delete: " + JSON.stringify(deleteIssue) + 'type of id: ' +typeof(req.body._id));
       try {
         MongoClient.connect(MONGO_URI, (err, db) => {
           if (err) {
@@ -176,8 +176,8 @@ module.exports = function(app) {
               if (!ObjectId.isValid(req.body._id)) {
                 resolve({ result: "_id error" });
               } else {
-                let deleteQuery = { _id: ObjectId(deleteIssue._id) };
-                db.collection(project).deleteOne(deleteIssue._id, function(
+               // let deleteQuery = { _id: ObjectId(req.body._id) };
+                db.collection(project).deleteOne({ _id: ObjectId(req.body._id) }, function(
                   err,
                   resObj
                 ) {
@@ -201,10 +201,10 @@ module.exports = function(app) {
           deletePromise().then(function(promResult){
             db.close();
             let result;
-            if(promResult.deleteCount == 1) {
+            if(promResult.n == 1) {
               result = {success: 'deleted ' + deleteIssue._id};
             }
-            else if(promResult.deleteCount == 0) {
+            else if(promResult.n == 0) {
               result = {failed: 'could not delete' + deleteIssue._id};
             }
             else {
