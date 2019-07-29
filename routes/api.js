@@ -23,7 +23,46 @@ module.exports = function(app) {
     .route("/api/issues/:project")
     .get(function(req, res) {
       let project = req.params.project;
+      let queryData = req.query;
       console.log("Get: " + project);
+
+      try {
+        MongoClient.connect(MONGO_URI, (err, db) => {
+          if(err) {
+            console.log('Database error: ' + err);
+          }
+          else {
+            console.log("Successful database connection!");
+            let myFindPromise = () => {
+              return new Promise((resolve, reject) => {
+                db.collection(project).find({}, (err, res) => {
+                  if(err) {
+                    reject(err);
+                  }
+                  else {
+                    console.log('Find returns: ' + res);
+                    resolve(res);
+                  }
+                });
+              });
+            };
+          }
+
+          let findPromise = async() => {
+            let promiseResult = await myFindPromise();
+            return promiseResult;
+          }; 
+
+          findPromise().then(function(result){
+            db.close();
+            res.json(result);
+          });
+
+        });
+      }
+      catch(e){
+        next(e);
+      }
     })
 
     .post(function(req, res) {
