@@ -201,11 +201,12 @@ module.exports = function(app) {
           deletePromise().then(function(promResult){
             db.close();
             let result;
-            if(promResult.n == 1) {
+            console.log('delete result: ' + JSON.stringify(promResult.deletedCount));
+            if(promResult.deletedCount == 1) {
               result = {success: 'deleted ' + deleteIssue._id};
             }
-            else if(promResult.n == 0) {
-              result = {failed: 'could not delete' + deleteIssue._id};
+            else if(promResult.deletedCount == 0) {
+              result = {failed: 'could not delete ' + deleteIssue._id};
             }
             else {
               result = promResult;
@@ -218,17 +219,6 @@ module.exports = function(app) {
       } catch (e) {
         next(e);
       }
-      /*if (deleteIssue._id === "" || deleteIssue._id === null) {
-        res.json({ result: "_id error" });
-      } else {
-        //res.json({succes: 'success deleted'});
-        if ((deleteResult = 1)) {
-          let success = "deleted " + deleteIssue._id;
-          res.json({ success });
-        } else {
-          let failed = "could not delete " + deleteIssue._id;
-          res.json({ failed });
-        }
-      }*/
+      
     });
 };
