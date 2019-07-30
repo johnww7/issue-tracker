@@ -25,42 +25,39 @@ module.exports = function(app) {
       let project = req.params.project;
       let queryData = req.query;
       console.log("Get: " + project);
+      console.log('Query string: ' + JSON.stringify(queryData));
 
       try {
         MongoClient.connect(MONGO_URI, (err, db) => {
-          if(err) {
-            console.log('Database error: ' + err);
-          }
-          else {
-            console.log("Successful database connection!");
-            let myFindPromise = () => {
-              return new Promise((resolve, reject) => {
-                db.collection(project).find({}, (err, res) => {
-                  if(err) {
-                    reject(err);
-                  }
-                  else {
-                    console.log('Find returns: ' + res);
-                    resolve(res);
-                  }
-                });
-              });
-            };
+          if (err) {
+            console.log("Database error: " + err);
           }
 
-          let findPromise = async() => {
+          console.log("Successful database connection!");
+          let myFindPromise = () => {
+            return new Promise((resolve, reject) => {
+              db.collection(project).find(queryData).toArray((err, res) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  console.log("Find returns: " + res);
+                  resolve(res);
+                }
+              });
+            });
+          };
+
+          let findPromise = async () => {
             let promiseResult = await myFindPromise();
             return promiseResult;
-          }; 
+          };
 
-          findPromise().then(function(result){
+          findPromise().then(function(result) {
             db.close();
             res.json(result);
           });
-
         });
-      }
-      catch(e){
+      } catch (e) {
         next(e);
       }
     })
@@ -203,7 +200,12 @@ module.exports = function(app) {
       let deleteIssue = req.body;
       let deleteResult;
       console.log("Delete: " + project);
-      console.log("Issue to delete: " + JSON.stringify(deleteIssue) + 'type of id: ' +typeof(req.body._id));
+      console.log(
+        "Issue to delete: " +
+          JSON.stringify(deleteIssue) +
+          "type of id: " +
+          typeof req.body._id
+      );
       try {
         MongoClient.connect(MONGO_URI, (err, db) => {
           if (err) {
@@ -215,19 +217,17 @@ module.exports = function(app) {
               if (!ObjectId.isValid(req.body._id)) {
                 resolve({ result: "_id error" });
               } else {
-               // let deleteQuery = { _id: ObjectId(req.body._id) };
-                db.collection(project).deleteOne({ _id: ObjectId(req.body._id) }, function(
-                  err,
-                  resObj
-                ) {
-                  if (err) {
-                    console.log(err);
+                // let deleteQuery = { _id: ObjectId(req.body._id) };
+                db.collection(project).deleteOne(
+                  { _id: ObjectId(req.body._id) },
+                  function(err, resObj) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      resolve(resObj);
+                    }
                   }
-                  else {
-                    resolve(resObj);
-                  }
-
-                });
+                );
               }
             });
           };
@@ -237,17 +237,17 @@ module.exports = function(app) {
             return deleteResult;
           };
 
-          deletePromise().then(function(promResult){
+          deletePromise().then(function(promResult) {
             db.close();
             let result;
-            console.log('delete result: ' + JSON.stringify(promResult.deletedCount));
-            if(promResult.deletedCount == 1) {
-              result = {success: 'deleted ' + deleteIssue._id};
-            }
-            else if(promResult.deletedCount == 0) {
-              result = {failed: 'could not delete ' + deleteIssue._id};
-            }
-            else {
+            console.log(
+              "delete result: " + JSON.stringify(promResult.deletedCount)
+            );
+            if (promResult.deletedCount == 1) {
+              result = { success: "deleted " + deleteIssue._id };
+            } else if (promResult.deletedCount == 0) {
+              result = { failed: "could not delete " + deleteIssue._id };
+            } else {
               result = promResult;
             }
             res.json(result);
@@ -258,6 +258,5 @@ module.exports = function(app) {
       } catch (e) {
         next(e);
       }
-      
     });
 };
