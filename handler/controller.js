@@ -66,6 +66,22 @@ function IssueController() {
       return updateData;
     }
   };
+
+  this.queryIssues = function(queryFilter) {
+    console.log('query fields: ' + JSON.stringify(queryFilter));
+
+    if(Object.keys(queryFilter).length == 0) {
+      return {};
+    }
+    else {
+      let queryObject = {};
+      for (const key in queryFilter) {
+        queryObject[key] = queryFilter[key];
+      }
+      console.log('Fields in Object: ' + JSON.stringify(queryObject));
+      return queryObject;s
+    }
+  };
 }
 
 module.exports = IssueController;

@@ -25,7 +25,7 @@ module.exports = function(app) {
       let project = req.params.project;
       let queryData = req.query;
       console.log("Get: " + project);
-      console.log('Query string: ' + JSON.stringify(queryData));
+      console.log('Query string: ' + JSON.stringify(queryData) + ' type: ' + typeof(queryData));
 
       try {
         MongoClient.connect(MONGO_URI, (err, db) => {
@@ -36,7 +36,8 @@ module.exports = function(app) {
           console.log("Successful database connection!");
           let myFindPromise = () => {
             return new Promise((resolve, reject) => {
-              db.collection(project).find(queryData).toArray((err, res) => {
+              let queryFields = issueController.queryIssues(queryData);
+              db.collection(project).find(queryFields).toArray((err, res) => {
                 if (err) {
                   reject(err);
                 } else {
