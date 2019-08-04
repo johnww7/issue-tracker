@@ -76,10 +76,15 @@ function IssueController() {
     else {
       let queryObject = {};
       for (const key in queryFilter) {
-        queryObject[key] = queryFilter[key];
+        if(key === 'open') {
+          queryObject[key] = (queryFilter[key] == "true");
+        }
+        else {
+          queryObject[key] = queryFilter[key];
+        }
       }
       console.log('Fields in Object: ' + JSON.stringify(queryObject));
-      return queryObject;s
+      return queryObject;
     }
   };
 }
