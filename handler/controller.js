@@ -40,7 +40,9 @@ function IssueController() {
 
   this.updateIssue = function(entryData) {
     let updated_on = { updated_on: new Date() };
-    let open = { open: entryData.open || true };
+    let checkClose = (entryData.open == "false") ? false : true;
+    //let open = { open: checkClose || true };
+    let open = {open: checkClose};
     console.log("Update data from issue: " + JSON.stringify(entryData));
 
     let filterUpdateData = Object.keys(entryData)
@@ -77,7 +79,7 @@ function IssueController() {
       let queryObject = {};
       for (const key in queryFilter) {
         if(key === 'open') {
-          queryObject[key] = (queryFilter[key] == "true");
+          queryObject[key] = (queryFilter[key] == "true") ? true : false;
         }
         else {
           queryObject[key] = queryFilter[key];
