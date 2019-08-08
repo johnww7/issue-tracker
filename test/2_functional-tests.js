@@ -164,11 +164,42 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          open: false
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.property(res.body[0], 'open');
+          assert.equal(res.body[0].open, false);
+          done();
+        });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
-        
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({
+          open: true,
+          status_text: 'In progress',
+          issue_text: 'Multiple fields present',
+          assigned_to: 'William'
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.property(res.body[0], 'open');
+          assert.property(res.body[0], 'status_text');
+          assert.property(res.body[0], 'issue_text');
+          assert.property(res.body[0], 'assigned_to');
+          assert.equal(res.body[0].open, true);
+          assert.equal(res.body[0].status_text, 'In progress');
+          assert.equal(res.body[0].issue_text, 'Multiple fields present');
+          assert.equal(res.body[0].assigned_to, 'William');
+          done();
+        });
       });
       
     });
