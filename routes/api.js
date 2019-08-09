@@ -13,7 +13,8 @@ var MongoClient = require("mongodb").MongoClient;
 var ObjectId = require("mongodb").ObjectID;
 var Controller = require("../handler/controller.js");
 
-const MONGO_URI = process.env.MONGO_URI; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+//const MONGO_URI = process.env.MONGO_URI; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+const MONGO_URI = 'mongodb://john:N1teLockon@ds035787.mlab.com:35787/jwfccmongodb';
 
 var issueController = new Controller();
 
@@ -21,7 +22,7 @@ module.exports = function(app) {
   //const collection = db.collection(project);
   app
     .route("/api/issues/:project")
-    .get(function(req, res) {
+    .get(function(req, res, next) {
       let project = req.params.project;
       let queryData = req.query;
       console.log("Get: " + project);
@@ -59,11 +60,13 @@ module.exports = function(app) {
           });
         });
       } catch (e) {
-        next(e);
+        console.log(e);
+        //next(e);
       }
+      next();
     })
 
-    .post(function(req, res) {
+    .post(function(req, res, next) {
       let project = req.params.project;
       let issueData = req.body;
       //console.log('params: ' + JSON.stringify(req.query.issue_title));
@@ -114,10 +117,12 @@ module.exports = function(app) {
               res.json(postedIssue);
             });
           });
-        } catch (e) {
-          next(e);
+        } catch(e) {
+          console.log(e);
+          //next(e);
         }
       }
+      next();
     })
 
     .put(function(req, res) {

@@ -141,7 +141,7 @@ suite('Functional Tests', function() {
       
     }); 
     
-    suite.skip('GET /api/issues/{project} => Array of objects with issue data', function() {
+    suite('GET /api/issues/{project} => Array of objects with issue data', function() {
       
       test('No filter', function(done) {
         chai.request(server)
@@ -204,7 +204,7 @@ suite('Functional Tests', function() {
       
     });
     
-    suite.skip('DELETE /api/issues/{project} => text', function() {
+    suite('DELETE /api/issues/{project} => text', function() {
       
       test('No _id', function(done) {
         chai.request(server)

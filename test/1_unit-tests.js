@@ -15,7 +15,7 @@ var issueController = new controller();
 suite('Unit Tests', function() {
 
 //none required
-    suite('Function issueController.sendIssue(data)', function(){
+    suite.skip('Function issueController.sendIssue(data)', function(){
         
         test('All fields filled input', function(done) {
             let inputData = {
