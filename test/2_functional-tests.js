@@ -32,11 +32,16 @@ suite('Functional Tests', function() {
             assert.equal(res.status, 200);
             console.log('body: ' + res.body);  
             //assert.equal(res.body.issue_title, 'Title');
-            assert.isDefined(res.body.issue_title, 'field has been filled');
+            /*assert.isDefined(res.body.issue_title, 'field has been filled');
             assert.isDefined(res.body.issue_text, 'field has been filled');
             assert.isDefined(res.body.created_by, 'field has been filled');
             assert.isDefined(res.body.assigned_to, 'field has been filled');
-            assert.isDefined(res.body.status_text, 'field has been filled');
+            assert.isDefined(res.body.status_text, 'field has been filled');*/
+            assert.equal(res.body.issue_title, 'Title');
+            assert.equal(res.body.issue_text, 'text');
+            assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+            assert.equal(res.body.assigned_to, 'Chai and Mocha');
+            assert.equal(res.body.status_text, 'In QA');
             //fill me in too!
             //setTimeout(done, 5000);
             done();  
@@ -52,17 +57,15 @@ suite('Functional Tests', function() {
           issue_title: 'Required Title',
           issue_text: 'Required Text',
           created_by: 'Functional Test - Required fields filled in',
-          assigned_to: '',
-          status_text: ''
+          
         })
         .end(function(err, res){
           
           assert.equal(res.status, 200);
-          assert.isDefined(res.body.issue_title, 'field has been filled');
-          assert.isDefined(res.body.issue_text, 'field has been filled');
-          assert.isDefined(res.body.created_by, 'field has been filled');
-          assert.equal(res.body.assigned_to, '');
-          assert.equal(res.body.status_text, '');
+          assert.equal(res.body.issue_title, 'Required Title');
+          assert.isDefined(res.body.issue_text, 'Required Text');
+          assert.isDefined(res.body.created_by, 'Functional Test - Required fields filled in');
+          
           done();  
           
         }); 
@@ -80,7 +83,8 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.body.issue_title, 'Please fill out title field');
+          //assert.equal(res.body.issue_title, 'Please fill out title field');
+          assert.notExists(req.body.issue_title), 'Missing required fields';
           
           done();
         });       
