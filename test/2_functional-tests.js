@@ -83,8 +83,9 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
+          //console.log('In missing body: ' + JSON.stringify(res.body));
           //assert.equal(res.body.issue_title, 'Please fill out title field');
-          assert.notExists(req.body.issue_title), 'Missing required fields';
+          assert.equal(res.body.issue_title, 'Please fill out title field');
           
           done();
         });       
@@ -94,7 +95,7 @@ suite('Functional Tests', function() {
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      test('No body', function(done) {
+      test('No body for update', function(done) {
         chai.request(server)
         .put("/api/issues/test")
         .send({
@@ -102,8 +103,9 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res) {
           assert.equal(res.status, 200);
+          console.log('No body fields: ' + JSON.stringify(res.body));
           assert.equal(res.body._id, '32dAxmWn4G');
-          assert.equal(res.body.update, 'no updated field sent');
+          assert.equal(res.body.result, 'no updated field sent');
         });
       });
       
