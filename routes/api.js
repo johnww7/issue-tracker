@@ -55,9 +55,10 @@ module.exports = function(app) {
           };
 
           findPromise().then(function(result) {
-            db.close();
-            res.json(result);
+            //db.close();
+            return res.json(result);
           });
+          //db.close();
         });
       } catch (e) {
         console.log(e);
