@@ -53,18 +53,18 @@ module.exports = function(app) {
             let promiseResult = await myFindPromise();
             return promiseResult;
           };
-
+          //insertPromise().then(function(promResult) {
           findPromise().then(function(result) {
-            //db.close();
+            db.close();
             return res.json(result);
           });
-          //db.close();
+          db.close();
         });
       } catch (e) {
         console.log(e);
         //next(e);
       }
-      next();
+      //next();
     })
 
     .post(function(req, res, next) {
@@ -198,7 +198,8 @@ module.exports = function(app) {
           });
         });
       } catch (e) {
-        next(e);
+        console.log(e);
+        //next(e);
       }
     })
 
@@ -263,7 +264,8 @@ module.exports = function(app) {
           db.close();
         });
       } catch (e) {
-        next(e);
+        console.log(e);
+        //next(e);
       }
     });
 };
