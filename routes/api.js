@@ -58,7 +58,7 @@ module.exports = function(app) {
             db.close();
             return res.json(result);
           });
-          db.close();
+          
         });
       } catch (e) {
         console.log(e);
@@ -76,9 +76,9 @@ module.exports = function(app) {
       let submitIssue = issueController.sendIssue(issueData);
       console.log("submitted issue: " + JSON.stringify(submitIssue));
 
-      if (Object.keys(submitIssue).length === 1) {
+      /*if (Object.keys(submitIssue).length === 1) {
         res.json(submitIssue);
-      } else {
+      } else {*/
         let issueInserted;
         try {
           MongoClient.connect(MONGO_URI, (err, db) => {
@@ -122,8 +122,8 @@ module.exports = function(app) {
           console.log(e);
           //next(e);
         }
-      }
-      next();
+      
+      
     })
 
     .put(function(req, res) {

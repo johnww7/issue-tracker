@@ -8,7 +8,10 @@ function IssueController() {
     let updated_on = new Date();
     let open = true;
     let returnData;
-
+    
+    /*if (Object.keys(data).length === 1){
+      return (returnData = {})
+    }*/
     if (data.issue_title === "") {
       return (returnData = {
         issue_title: "Please fill out title field"
