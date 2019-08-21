@@ -27,7 +27,7 @@ module.exports = function(app) {
       let queryData = req.query;
 
       try {
-        MongoClient.connect(MONGO_URI, (err, db) => {
+        MongoClient.connect(process.env.MONGO_URI, (err, db) => {
           if (err) {
             console.log("Database error: " + err);
           }
@@ -71,7 +71,7 @@ module.exports = function(app) {
 
       let issueInserted;
       try {
-        MongoClient.connect(MONGO_URI, (err, db) => {
+        MongoClient.connect(process.env.MONGO_URI, (err, db) => {
           if (err) {
             console.log("Database error: " + err);
           }
@@ -116,7 +116,7 @@ module.exports = function(app) {
 
       let result;
       try {
-        MongoClient.connect(MONGO_URI, (err, db) => {
+        MongoClient.connect(process.env.MONGO_URI, (err, db) => {
           if (err) {
             console.log("Database error: " + err);
           }
@@ -185,7 +185,7 @@ module.exports = function(app) {
       let deleteResult;
 
       try {
-        MongoClient.connect(MONGO_URI, (err, db) => {
+        MongoClient.connect(process.env.MONGO_URI, (err, db) => {
           if (err) {
             console.log("Database error: " + err);
           }
