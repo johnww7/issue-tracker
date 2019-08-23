@@ -1,6 +1,9 @@
 const shortid = require("shortid");
 
 function IssueController() {
+
+  //Tests fields from post route(submit) to see if all mandatory fields are
+  //filled in and formats fields to be submitted to issue tracker
   this.sendIssue = function(data) {
     let created_on = new Date();
     let updated_on = new Date();
@@ -33,6 +36,8 @@ function IssueController() {
     }
   };
 
+  //Takes fields submitted through put route(update) and filters out all empty fields and id field
+  //Then tests to see if no fields were filled in or formats fields to be submitted for update
   this.updateIssue = function(entryData) {
     let updated_on = { updated_on: new Date() };
     let checkClose = entryData.open == "false" ? false : true;
@@ -59,6 +64,7 @@ function IssueController() {
     }
   };
 
+  //Formats the query search parameters for get route based on query parameters submiited.
   this.queryIssues = function(queryFilter) {
     if (Object.keys(queryFilter).length == 0) {
       return {};

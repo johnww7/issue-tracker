@@ -22,6 +22,7 @@ var issueController = new Controller();
 module.exports = function(app) {
   app
     .route("/api/issues/:project")
+    //Route returns all issues in issue tracker system based on queries
     .get(function(req, res, next) {
       let project = req.params.project;
       let queryData = req.query;
@@ -63,6 +64,8 @@ module.exports = function(app) {
       }
     })
 
+    //Route submits issues based on mandatory fields to be filled in and optional fields
+    //to issue tracker system
     .post(function(req, res, next) {
       let project = req.params.project;
       let issueData = req.body;
@@ -109,6 +112,8 @@ module.exports = function(app) {
       }
     })
 
+    //Route updates existing issues already in issue tracker database based on
+    //fields filled in and submitted.
     .put(function(req, res) {
       let project = req.params.project;
       let issueData = req.body;
@@ -179,6 +184,7 @@ module.exports = function(app) {
       }
     })
 
+    //Route deletes issue based on id from database
     .delete(function(req, res) {
       let project = req.params.project;
       let deleteIssue = req.body;
